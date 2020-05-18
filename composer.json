@@ -1,0 +1,24 @@
+{
+    "name": "shahburhan/laravel-paypal",
+    "description": "Laravel Package consuming PayPal's Subscription API",
+    "type": "library",
+    "license": "MIT",
+    "authors": [{
+        "name": "Burhan Shah",
+        "email": "sb.shahburhan@gmail.com"
+    }],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^7.2.5",
+    },
+    "autoload": {
+        "psr-4": {
+            "ShahBurhan\\LaravelPayPal\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": ["ShahBurhan\\LaravelPayPal\\LaravelPayPalServiceProvider"]
+        }
+    }
+}
