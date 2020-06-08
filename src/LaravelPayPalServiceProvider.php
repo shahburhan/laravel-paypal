@@ -1,5 +1,5 @@
 <?php
-namespace ShahBurhan\LaravelPayPalServiceProvider
+namespace ShahBurhan\LaravelPaypal;
 use Illuminate\Support\ServiceProvider;
 
 class LaravelPayPalServiceProvider extends ServiceProvider
@@ -12,8 +12,9 @@ class LaravelPayPalServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__.'/../config/config.php' => config_path('laravel_paypal.php'),
+            __DIR__.'/config/config.php' => config_path('laravel_paypal.php'),
         ], 'laravel_paypal');
+        $this->loadMigrationsFrom(__DIR__.'/migrations');
     }
 
     /**
@@ -24,7 +25,7 @@ class LaravelPayPalServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/../config/config.php',
+            __DIR__.'/config/config.php',
             'laravel_paypal'
         );
     }
