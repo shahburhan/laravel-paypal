@@ -24,6 +24,11 @@ class PayPalSubscription
      */
     protected $update = '/v1/billing/subscriptions/{id}';
     /**
+     * The PayPal Endpoint to revise a subscription
+     * @var string
+     */
+    protected $revise = '/v1/billing/subscriptions/{id}/revise';
+    /**
      * The PayPal Endpoint to list all subscription
      * @var string
      */
@@ -45,7 +50,7 @@ class PayPalSubscription
     protected $cancel = '/v1/billing/subscriptions/{id}/cancel';
 
     protected $capture = '/v1/billing/subscriptions/{id}/capture';
-    
+
     protected $suspend = '/v1/billing/subscriptions/{id}/suspend';
     /**
      * Generated Access Token
@@ -120,13 +125,24 @@ class PayPalSubscription
         return json_decode($response->getBody(), true);
     }
     /**
+     * Method to revise a subscription
+     * @return Response
+     */
+    public function revise()
+    {
+        $body         = ['plan_id' => $this->plan];
+        $this->revise = str_replace('{id}', $this->id, $this->revise);
+        $response     = $this->client->request("POST", $this->revise, ["headers" => $this->headers(), "json" => $body]);
+        return json_decode($response->getBody(), true);
+    }
+    /**
      * Method to activate a subscription
      * @return Response
      */
     public function activate()
     {
         $this->activate = str_replace('{id}', $this->id, $this->activate);
-        $response   = $this->client->request("GET", $this->activate, ["headers" => $this->headers()]);
+        $response       = $this->client->request("GET", $this->activate, ["headers" => $this->headers()]);
         return $response->getBody();
     }
     /**
@@ -136,7 +152,7 @@ class PayPalSubscription
     public function cancel()
     {
         $this->cancel = str_replace('{id}', $this->id, $this->cancel);
-        $response   = $this->client->request("GET", $this->cancel, ["headers" => $this->headers()]);
+        $response     = $this->client->request("GET", $this->cancel, ["headers" => $this->headers()]);
         return $response->getBody();
     }
 
@@ -149,7 +165,7 @@ class PayPalSubscription
         $this->transactions = str_replace('{id}', $this->id, $this->transactions);
 
         try {
-            $response   = $this->client->request("GET", $this->transactions, ["headers" => $this->headers()]);
+            $response = $this->client->request("GET", $this->transactions, ["headers" => $this->headers()]);
         } catch (ClientException $e) {
             return $e->getResponse()->getBody();
         }
